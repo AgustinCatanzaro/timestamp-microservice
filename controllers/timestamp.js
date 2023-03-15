@@ -1,4 +1,5 @@
 const { StatusCodes } = require('http-status-codes')
+const { BadRequestError } = require('../errors')
 
 const getTimeStamp = (req, res) => {
 	let { date: newDate } = req.params
@@ -10,12 +11,9 @@ const getTimeStamp = (req, res) => {
 
 	//checking if the params received is a valid date format.
 	if (isNaN(newDate)) {
-		console.log(newDate) //throw expection...
+		throw new BadRequestError('Please provide a valid Date format')
 	}
 
-	console.log(
-		`unix:${newDate.getTime()}    exerciseUnix:${newDate.toUTCString()}`
-	)
 	res.status(StatusCodes.OK).json({
 		unix: newDate.getTime(),
 		utc: newDate.toUTCString(),
